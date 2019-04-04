@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Person extends BaseModel {
+public class Person extends BaseModelId {
 
     @Column
     private String firstName;

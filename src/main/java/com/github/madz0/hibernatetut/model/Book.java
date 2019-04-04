@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Book extends BaseModel {
+public class Book extends BaseModelId {
 
     @Column(nullable = false)
     private String name;

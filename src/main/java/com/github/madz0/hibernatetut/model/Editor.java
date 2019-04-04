@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 @Getter
 @Setter
 @Entity
-public class Editor extends BaseModel {
+public class Editor extends BaseModelId {
 
     @Column(nullable = false)
     private String speciality;

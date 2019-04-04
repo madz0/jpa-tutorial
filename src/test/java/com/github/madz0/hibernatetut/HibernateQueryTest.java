@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
@@ -31,8 +32,8 @@ import static org.junit.Assert.assertNotNull;
 @Slf4j
 @DataJpaTest
 @RunWith(SpringRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class HibernateQueryTest {
-    private static AtomicBoolean atomicBoolean = new AtomicBoolean(false);
     @Autowired
     AuthorRepository authorRepository;
     @Autowired
@@ -41,46 +42,45 @@ public class HibernateQueryTest {
     EntityManager entityManager;
     @Autowired
     BookRepository bookRepository;
+
     @Before
     public void init() {
-        if(!atomicBoolean.getAndSet(true)) {
-            Author author1 = new Author();
-            author1.setName("author1");
-            Author author2 = new Author();
-            author2.setName("author2");
-            Person person1 = new Person();
-            person1.setFirstName("person1");
-            person1.setLastName("person1i");
-            Person person2 = new Person();
-            person2.setFirstName("person2");
-            person2.setLastName("person2i");
-            Book book1 = new Book();
-            book1.setName("book1");
-            Publisher publisher1 = new Publisher();
-            publisher1.setName("publisher1");
-            Editor editor1 = new Editor();
-            editor1.setSpeciality("science");
-            Editor editor2 = new Editor();
-            editor2.setSpeciality("Poem");
+        Author author1 = new Author();
+        author1.setName("author1");
+        Author author2 = new Author();
+        author2.setName("author2");
+        Person person1 = new Person();
+        person1.setFirstName("person1");
+        person1.setLastName("person1i");
+        Person person2 = new Person();
+        person2.setFirstName("person2");
+        person2.setLastName("person2i");
+        Book book1 = new Book();
+        book1.setName("book1");
+        Publisher publisher1 = new Publisher();
+        publisher1.setName("publisher1");
+        Editor editor1 = new Editor();
+        editor1.setSpeciality("science");
+        Editor editor2 = new Editor();
+        editor2.setSpeciality("Poem");
 
-            author1.setPerson(person1);
-            person1.setAuthor(author1);
-            author1.setBooks(new HashSet<>(Arrays.asList(book1)));
-            author2.setPerson(person2);
-            person2.setAuthor(author2);
-            author2.setBooks(new HashSet<>(Arrays.asList(book1)));
-            book1.setAuthors(new HashSet<>(Arrays.asList(author1, author2)));
-            publisher1.setBooks(new HashSet<>(Arrays.asList(book1)));
-            book1.setPublisher(publisher1);
-            editor1.setPublisher(publisher1);
-            editor2.setPublisher(publisher1);
-            publisher1.setEditorMap(Stream.of(editor1, editor2).collect(Collectors.toMap(Editor::getSpeciality, x->x)));
+        author1.setPerson(person1);
+        person1.setAuthor(author1);
+        author1.setBooks(new HashSet<>(Arrays.asList(book1)));
+        author2.setPerson(person2);
+        person2.setAuthor(author2);
+        author2.setBooks(new HashSet<>(Arrays.asList(book1)));
+        book1.setAuthors(new HashSet<>(Arrays.asList(author1, author2)));
+        publisher1.setBooks(new HashSet<>(Arrays.asList(book1)));
+        book1.setPublisher(publisher1);
+        editor1.setPublisher(publisher1);
+        editor2.setPublisher(publisher1);
+        publisher1.setEditorMap(Stream.of(editor1, editor2).collect(Collectors.toMap(Editor::getSpeciality, x -> x)));
 
-            authorRepository.saveAll(Arrays.asList(author1, author2));
-            publisherRepository.save(publisher1);
-            entityManager.flush();
-            entityManager.clear();
-        }
+        authorRepository.saveAll(Arrays.asList(author1, author2));
+        publisherRepository.save(publisher1);
+        entityManager.flush();
+        entityManager.clear();
     }
 
     @Test

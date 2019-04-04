@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Publisher extends BaseModel {
+public class Publisher extends BaseModelId {
     @Column(nullable = false)
     private String name;
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL)

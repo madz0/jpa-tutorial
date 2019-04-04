@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-public class Author extends BaseModel {
+public class Author extends BaseModelId {
     @Column(nullable = false)
     private String name;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
