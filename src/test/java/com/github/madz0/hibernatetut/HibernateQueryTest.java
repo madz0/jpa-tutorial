@@ -19,6 +19,7 @@ import javax.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -125,5 +126,12 @@ public class HibernateQueryTest {
     public void testJoinQueryOneToMany() {
         List<Book> books = publisherRepository.findBooksWithQuery2();
         assertEquals("book1", books.get(0).getName());
+    }
+
+    @Test
+    public void testRepositoryEqualsForCollection() {
+        Book book = publisherRepository.findBooksWithQuery2().get(0);
+        List<Publisher> pubPublishersList = publisherRepository.findAllByBooksEquals(book);
+        assertNotNull(pubPublishersList);
     }
 }
