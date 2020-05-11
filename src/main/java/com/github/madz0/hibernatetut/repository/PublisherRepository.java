@@ -19,4 +19,6 @@ public interface PublisherRepository extends JpaRepository<Publisher, UUID> {
 
     @Query("select b from Publisher a join a.books b")
     List<Book> findBooksWithQuery2();
+
+    List<Publisher> findAllByBooksEquals(Book book);
 }
